@@ -35,5 +35,18 @@ TMDB_EPISODE_LANGUAGE_SEARCH = _config.getboolean(
 
 TRAKT_API_CLIENT_ID = _config.get(Section.TRAKT, "id")
 TRAKT_API_CLIENT_SECRET = _config.get(Section.TRAKT, "secret")
-TRAKT_API_DRY_RUN = _config.getboolean(Section.TRAKT, "dry_run")
-TRAKT_API_SYNC_PAGE_SIZE = _config.getint(Section.TRAKT, "page_size")
+
+# Optional redirect URI (only needed for auth code flow). Accept missing key, "None" or empty string as disabled.
+TRAKT_REDIRECT_URI = _config.get(Section.TRAKT, "TRAKT_REDIRECT_URI", fallback=None)
+if TRAKT_REDIRECT_URI in ("None", ""):
+    TRAKT_REDIRECT_URI = None
+
+TRAKT_API_DRY_RUN = _config.getboolean(Section.TRAKT, "dry_run", fallback=False)
+TRAKT_API_VERBOSE = _config.getboolean(Section.TRAKT, "verbose", fallback=True)
+TRAKT_API_SYNC_PAGE_SIZE = _config.getint(Section.TRAKT, "page_size", fallback=30)
+
+# Batch delay to avoid rate limiting (seconds). Use 1.0s default if not provided.
+TRAKT_API_BATCH_DELAY = _config.getfloat(Section.TRAKT, "batch_delay", fallback=1.0)
+TRAKT_API_MAX_RETRIES = _config.getint(Section.TRAKT, "max_retries", fallback=5)
+TRAKT_API_INITIAL_DELAY = _config.getfloat(Section.TRAKT, "initial_delay", fallback=3.0)
+TRAKT_API_RATE_LIMIT_DELAY = _config.getfloat(Section.TRAKT, "rate_limit_delay", fallback=30.0)
